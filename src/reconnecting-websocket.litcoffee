@@ -48,7 +48,7 @@ The all powerful connect function, sets up events and error handling.
           @onopen(event)
         @ws.onclose = (event) =>
           if @wasConnected
-            @ondisconnect(new Event('disconnected', {data: {forceClose: @forceclose}}))
+            @ondisconnect({forceClose: @forceclose})
           @reconnectAfter = 0
           if @forceclose
             @readyState = WebSocket.CLOSED

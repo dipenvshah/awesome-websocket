@@ -1,6 +1,6 @@
 {
   "name": "awesome-websocket",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "A WebSocket, with the extra awesome of client failover and autoreconnect",
   "keywords": [
     "WebSocket",

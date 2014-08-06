@@ -18,47 +18,45 @@ This may work on the client or the server. Because we love you.
 
     class ReconnectingWebSocket
       constructor: (@url) ->
-        @couldBeBusted = true
-        @forceclose = false
-        @allowReconnect = false
+        @forceClose = false
         @wasConnected = false
-        @connect()
-        @reconnect()
+        @reconnectAfter = 0
+        @connectLoop()
 
 This is the connection retry system. Keep trying at every opportunity.
 
-      reconnect: () ->
+      connectLoop: () ->
         background =>
-          if not @forceclose
-            @reconnect()
-            if @readyState isnt WebSocket.OPEN
-              if Date.now() > @reconnectAfter
-                @connect()
+          return if @forceClose
+
+          if @readyState isnt WebSocket.OPEN and @readyState isnt WebSocket.CONNECTING
+            if Date.now() > @reconnectAfter
+              @reconnectAfter = Date.now() + 500
+              @connect()
+
+          @connectLoop()
 
 The all powerful connect function, sets up events and error handling.
 
       connect: () ->
-        @reconnectAfter = Date.now() + 200
         @readyState = WebSocket.CONNECTING
         @ws = new WebSocket(@url)
-        @ws.onopen  = (event) =>
-          @wasConnected = true
-          @readyState = WebSocket.OPEN
-          @reconnectAfter = Date.now() * 2
-          @onopen(event)
-        @ws.onclose = (event) =>
-          if @wasConnected
-            @ondisconnect({forceClose: @forceclose})
-          @reconnectAfter = 0
-          if @forceclose
-            @readyState = WebSocket.CLOSED
-            @onclose(event)
-          else
-            @readyState = WebSocket.CONNECTING
+
         @ws.onmessage = (event) =>
           @onmessage(event)
+
+        @ws.onopen = (event) =>
+          @readyState = WebSocket.OPEN
+          @wasConnected = true
+          @onopen(event)
+
+        @ws.onclose = (event) =>
+          @readyState = WebSocket.CLOSED
+          @ondisconnect({forceClose: @forceClose}) if @wasConnected
+          @onclose(event) if @forceClose
+
         @ws.onerror = (event) =>
-          @reconnectAfter = 0
+          @readyState = WebSocket.CLOSED
           @onerror(event)
 
 Sending has an odd uncatchable exception, so use marker flags
@@ -74,7 +72,7 @@ to know that we did or did not get past a send.
         @readyState = state
 
       close: ->
-        @forceclose = true
+        @forceClose = true
         @ws.close()
 
 Since there's all sorts of ways your connection can be severed if it's not active

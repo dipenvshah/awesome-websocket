@@ -14,24 +14,27 @@ If you explicitly call `close()`, then this socket will really close, otherwise
 it will work to automatically reconnect `onerror` and `onclose` from the
 underlying WebSocket.
 
-#Events
-##onserver(event)
-This is fired when the active server changes, this will be after a `send` as
-that is the only time the socket has activity to 'know' it switched servers.
-
     ReconnectingWebSocket = require('./reconnecting-websocket.litcoffee')
     WebSocket = window?.WebSocket || require('ws')
     background = window?.requestAnimationFrame or setTimeout
+    MAX_TRIES = 2
 
+You feed the AwesomeWebSocket two things; url(s) and message try counts.  The **urls** argument can either be a string with
+one web socket endpoint or it can be an array of strings representing multiple.
+
+The second argument, **tryMax**, is the maximum amount of times **PER SOCKET** that message will be tried.  If the
+**tryMax** is set to 2 and you provide 3 URLs, the message will be tried 6 times before it's popped from the queue.
 
     class AwesomeWebSocket
-      constructor: (@urls) ->
+      constructor: (@urls, tryMax=MAX_TRIES) ->
         openAtAll = false
         @lastSocket = undefined
         @sockets = []
         @messageQueue = []
         if typeof(@urls) is "string"
           @urls = [@urls]
+
+        @tries = @urls.length * (tryMax || 1)
 
 All the urls are reconnecting sockets, these will connect themselves.
 
@@ -85,11 +88,12 @@ And if not treat the array of sockets as a ring buffer.
               @messageQueue.pop()
             else
 
-Tries to send the message once per socket.  If it can't send after going around the ring,
-we take it off the queue and send it back.
+Tries to send the message once per socket.  It will go around the ring as many times as specified from the **tryMax**.
 
               item.tryCount += 1
-              if item.tryCount is @sockets.length
+              console.log "Failed to send message #{item.tryCount} times. #{@tries - item.tryCount} tries left."
+              if item.tryCount is @tries
+                console.log "Couldn't send message.  Popping from queue."
                 @messageQueue.pop()
                 @onsendfail(item.data)
 

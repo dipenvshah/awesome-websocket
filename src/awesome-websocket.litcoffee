@@ -77,11 +77,21 @@ And if not treat the array of sockets as a ring buffer.
               trySocket = @sockets.pop()
               @sockets.unshift trySocket
 
+            item = @messageQueue[@messageQueue.length-1]
+
             if trySocket.readyState is WebSocket.OPEN
-              data = @messageQueue[@messageQueue.length-1]
-              trySocket.send(data)
+              trySocket.send(item.data)
               @lastSocket = trySocket
               @messageQueue.pop()
+            else
+
+Tries to send the message once per socket.  If it can't send after going around the ring,
+we take it off the queue and send it back.
+
+              item.tryCount += 1
+              if item.tryCount is @sockets.length
+                @messageQueue.pop()
+                @onsendfail(item.data)
 
 Start pumping messages.
 
@@ -90,7 +100,7 @@ Start pumping messages.
 Sending just queues up a message to go out to the server.
 
       send: (data) ->
-        @messageQueue.unshift data
+        @messageQueue.unshift data: data, tryCount: 0
 
 Allow for specifiecation of a keep alive, which is just passed on to the
 underlying reconnecting sockets.
@@ -106,6 +116,8 @@ Close all the sockets.
           socket.close()
         @onclose()
 
+
+
 Empty shims for the event handlers. These are just here for discovery via
 the debugger.
 
@@ -113,6 +125,7 @@ the debugger.
       onclose: (event) ->
       onmessage: (event) ->
       onerror: (event) ->
+      onsendfail: (message) ->
 
 Publish this object for browserify.
 

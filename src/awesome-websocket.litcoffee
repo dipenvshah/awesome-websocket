@@ -16,7 +16,6 @@ underlying WebSocket.
 
     ReconnectingWebSocket = require('./reconnecting-websocket.litcoffee')
     WebSocket = window?.WebSocket || require('ws')
-    background = window?.requestAnimationFrame or setTimeout
     MAX_TRIES = 2
 
 You feed the AwesomeWebSocket two things; url(s) and message try counts.  The **urls** argument can either be a string with
@@ -67,7 +66,7 @@ Do this first, on purpose. Our buddy `send` below will throw an
 un-catch-able exception, so there wouldn't be that much opportunity
 toward the end of this function.
 
-          background sendloop
+          setTimeout sendloop
           if @messageQueue.length
 
 This is a very simple form of sticky preference for the last socket that worked.
@@ -99,7 +98,7 @@ Tries to send the message once per socket.  It will go around the ring as many t
 
 Start pumping messages.
 
-        background sendloop
+        setTimeout sendloop
 
 Sending just queues up a message to go out to the server.
 

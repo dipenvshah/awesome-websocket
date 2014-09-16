@@ -14,6 +14,7 @@ A reference to the contained WebSocket in case you need to poke under the hood.
 This may work on the client or the server. Because we love you.
 
     WebSocket = window?.WebSocket || require('ws')
+    background = window?.requestAnimationFrame or setTimeout
 
     class ReconnectingWebSocket
       constructor: (@url) ->
@@ -25,7 +26,7 @@ This may work on the client or the server. Because we love you.
 This is the connection retry system. Keep trying at every opportunity.
 
       connectLoop: () ->
-        setTimeout =>
+        background =>
           return if @forceClose
 
           if @readyState isnt WebSocket.OPEN and @readyState isnt WebSocket.CONNECTING

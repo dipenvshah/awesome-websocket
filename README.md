@@ -46,7 +46,6 @@ make watch
 ```
 
 Once you've done that successfully you should find a test pages at 
-  * `http://localhost:8080/index.html`
   * `http://localhost:8080/hunting.html`
   * `http://localhost:8080/reconnecting.html`
   * `http://localhost:8080/keepalive.html`

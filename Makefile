@@ -1,11 +1,7 @@
 .PHONY: watch clean run-server
 
-watch:	build
+watch:
 	cd test && $(MAKE) watch
-
-build:
-	node_modules/.bin/browserify  test/www/js/browser-client.js --outfile awesome-websocket-global.js -t coffeeify
-	node_modules/.bin/browserify  client.js --outfile awesome-websocket.js
 
 publish:
 	npm version patch -m "version up for patch"

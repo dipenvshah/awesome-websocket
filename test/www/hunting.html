@@ -17,6 +17,7 @@
   <script type="text/javascript">
     var controllingWs = new SocketServerController(8080);
 
+    /*
     QUnit.asyncTest('constructor takes a string or a list', function(assert) {
       expect(2);
       var testWsWithString = new AwesomeWebSocket("ws://localhost:8080/socket");
@@ -33,7 +34,6 @@
       testWsWithArray.onclose = closer;
       testWsWithString.onclose = closer;
     });
-
     QUnit.asyncTest('sending an object as a string', function(assert) {
       expect(1);
       var testWs = new AwesomeWebSocket(["ws://localhost:8080/socket"]);
@@ -65,7 +65,7 @@
         }
       }
     });
-
+    */
     QUnit.asyncTest('message to dead server goes to next', function(assert) {
       expect(3);
       var serverOne, serverTwo;

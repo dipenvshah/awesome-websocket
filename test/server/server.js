@@ -7,6 +7,7 @@ var statichandler   = require('serve-static');
 var errorhandler    = require('errorhandler');
 var log             = require('simplog');
 var _               = require('lodash');
+var Q               = require('q');
 
 var app = express();
 app.use(errorhandler());
@@ -81,5 +82,21 @@ wss.on('connection', function(ws) {
 process.on('uncaughtException', function (e){
   console.log("ouch, exception port " + serverPort);
   console.log(e.stack);
+});
+process.on('SIGTERM', function(e){
+  var exitEvents = [];
+  log.info("server dying");
+  _.each(allMyChildren, function(child) {
+    var exitEvent = Q.defer();
+    exitEvents.push(exitEvent);
+    child.on('exit', function(){ exitEvent.resolve(); });
+    child.kill();
+  });
+  log.info("waiting for done on " + exitEvents.length + " children");
+  if ( exitEvents.length > 0 ){
+    Q.allSettled(exitEvents);
+  }
+  log.info("cya");
+  process.exit(0);
 });
 server.listen(serverPort);

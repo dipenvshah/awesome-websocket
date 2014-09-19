@@ -90,7 +90,7 @@ Start pumping messages.
 Sending just queues up a message to go out to the server.
 
       send: (data) ->
-        @messageQueue.unshift data: data, tryCount: 0
+        @messageQueue.unshift data: data
 
 Allow for specifiecation of a keep alive, which is just passed on to the
 underlying reconnecting sockets.

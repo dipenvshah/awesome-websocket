@@ -13,7 +13,7 @@ A reference to the contained WebSocket in case you need to poke under the hood.
 
 This may work on the client or the server. Because we love you.
 
-    background = window?.requestAnimationFrame or setTimeout
+    background = require('./background-process.litcoffee')
 
     class ReconnectingWebSocket
       constructor: (@url) ->

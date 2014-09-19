@@ -17,11 +17,8 @@ underlying WebSocket.
     ReconnectingWebSocket = require('./reconnecting-websocket.litcoffee')
     background = require('./background-process.litcoffee')
 
-You feed the AwesomeWebSocket two things; url(s) and message try counts.  The **urls** argument can either be a string with
+You feed the AwesomeWebSocket constructor one or more URLs.  The **urls** argument can either be a string with
 one web socket endpoint or it can be an array of strings representing multiple.
-
-The second argument, **tryMax**, is the maximum amount of times **PER SOCKET** that message will be tried.  If the
-**tryMax** is set to 2 and you provide 3 URLs, the message will be tried 6 times before it's popped from the queue.
 
     class AwesomeWebSocket
       constructor: (@urls) ->

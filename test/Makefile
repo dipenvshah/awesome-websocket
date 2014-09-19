@@ -1,8 +1,8 @@
 .PHONY: test watch run-server clean
 
 build: ./node_modules ../node_modules
-	mkdir -p www/js
-	./node_modules/.bin/browserify  ./www/js/browser-client.js -r q -i ws -i coffee-script/register --outfile www/js/reconn.js -t coffeeify
+	cp ../awesome-websocket.js www/js/awesome-websocket.js
+	cp ../awesome-websocket-global.js www/js/awesome-websocket-global.js
 
 watch: build
 	PORT=8080 DEBUG=true ./node_modules/.bin/supervisor -V --watch .. --ignore ../node_modules,www,node_modules -e ".litcoffee|.coffee|.js" --exec make run-server

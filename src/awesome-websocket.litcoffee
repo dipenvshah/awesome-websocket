@@ -76,10 +76,9 @@ And if not treat the array of sockets as a ring buffer.
               trySocket = @sockets.pop()
               @sockets.unshift trySocket
 
-            item = @messageQueue[@messageQueue.length-1]
-
             if trySocket.readyState is WebSocket.OPEN
-              trySocket.send(item.data)
+              data = @messageQueue[@messageQueue.length-1]
+              trySocket.send(data)
               @lastSocket = trySocket
               @messageQueue.pop()
 
@@ -90,7 +89,7 @@ Start pumping messages.
 Sending just queues up a message to go out to the server.
 
       send: (data) ->
-        @messageQueue.unshift data: data
+        @messageQueue.unshift data
 
 Allow for specifiecation of a keep alive, which is just passed on to the
 underlying reconnecting sockets.

@@ -26,15 +26,13 @@ The second argument, **tryMax**, is the maximum amount of times **PER SOCKET** t
 **tryMax** is set to 2 and you provide 3 URLs, the message will be tried 6 times before it's popped from the queue.
 
     class AwesomeWebSocket
-      constructor: (@urls, tryMax=MAX_TRIES) ->
+      constructor: (@urls) ->
         openAtAll = false
         @lastSocket = undefined
         @sockets = []
         @messageQueue = []
         if typeof(@urls) is "string"
           @urls = [@urls]
-
-        @tries = @urls.length * (tryMax || 1)
 
 All the urls are reconnecting sockets, these will connect themselves.
 
@@ -86,16 +84,6 @@ And if not treat the array of sockets as a ring buffer.
               trySocket.send(item.data)
               @lastSocket = trySocket
               @messageQueue.pop()
-            else
-
-Tries to send the message once per socket.  It will go around the ring as many times as specified from the **tryMax**.
-
-              item.tryCount += 1
-              console.log "Failed to send message #{item.tryCount} times. #{@tries - item.tryCount} tries left."
-              if item.tryCount is @tries
-                console.log "Couldn't send message.  Popping from queue."
-                @messageQueue.pop()
-                @onsendfail(item.data)
 
 Start pumping messages.
 
@@ -129,7 +117,6 @@ the debugger.
       onclose: (event) ->
       onmessage: (event) ->
       onerror: (event) ->
-      onsendfail: (message) ->
 
 Publish this object for browserify.
 

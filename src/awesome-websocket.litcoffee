@@ -15,9 +15,7 @@ it will work to automatically reconnect `onerror` and `onclose` from the
 underlying WebSocket.
 
     ReconnectingWebSocket = require('./reconnecting-websocket.litcoffee')
-    WebSocket = window?.WebSocket || require('ws')
     background = window?.requestAnimationFrame or setTimeout
-    MAX_TRIES = 2
 
 You feed the AwesomeWebSocket two things; url(s) and message try counts.  The **urls** argument can either be a string with
 one web socket endpoint or it can be an array of strings representing multiple.

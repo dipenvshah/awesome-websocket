@@ -13,7 +13,6 @@ A reference to the contained WebSocket in case you need to poke under the hood.
 
 This may work on the client or the server. Because we love you.
 
-    WebSocket = window?.WebSocket || require('ws')
     background = window?.requestAnimationFrame or setTimeout
 
     class ReconnectingWebSocket

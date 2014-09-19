@@ -10,11 +10,11 @@
   <script type="text/javascript">
     window.debug = true;
   </script>
-  <script type="text/javascript" src="js/reconn.js"> </script>
+  <script type="text/javascript" src="js/q.js"> </script>
+  <script type="text/javascript" src="js/awesome-websocket-global.js"> </script>
   <script type="text/javascript" src="js/server_controller.js"> </script>
   <script type="text/javascript" src="js/lodash.js"> </script>
   <script type="text/javascript">
-    var Q = require('q');
     QUnit.asyncTest('sending an object', function(assert) {
       expect(1);
       var testWs = new ReconnectingWebSocket("ws://localhost:8080/socket");

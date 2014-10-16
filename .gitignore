@@ -1,4 +1,2 @@
 node_modules/
 *.swp
-test/www/js/awesome-websocket-global.js
-test/www/js/awesome-websocket.js

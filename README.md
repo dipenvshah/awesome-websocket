@@ -174,10 +174,10 @@ aforementioned sockets, you call keepAlive passing an interval (in ms) and a mes
 that your server will respond to.
 
 ```html
-<script src="js/reconn.js"></script>
+<script src="js/awesome-websocket.js"></script>
 <script>
-  var AwesomeWebSocket = require("awesome-websocket").AwesomeWebSocket;
-  var ws = new AwesomeWebSocket("ws://localhost:8080/socket")
+  var aws = require("awesome-websocket").AwesomeWebSocket;
+  var ws = new aws.AwesomeWebSocket("ws://localhost:8080/socket")
   ws.onopen = function() {
     // this sets up the keep alive
     ws.keepAlive(60 * 1000, "ping!");
@@ -185,3 +185,11 @@ that your server will respond to.
 
 </script>
 ```
+
+You may have noticed the examples using a 'bare' require. This is an option because
+AwesomeWebsocket assumes you're gonna use it in a browser, and will add itself
+( and it's helper ReconnectingWebSocket ) to your window object for you.  This is
+assuming that you dont already have window.AwesomeWebSocket or window.ReconnectingWebSocket
+defined. If you do have either of those values defined on window, it won't overwrite 
+them and you can access them directly from the module reference as in the final example for
+keepalive (above).

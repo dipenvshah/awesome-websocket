@@ -18,7 +18,9 @@
     aws = require('awesome-websocket');
     QUnit.asyncTest('keep alive on ReconnectingWebSocket', function(assert) {
       expect(4);
-      var testWs = new ReconnectingWebSocket("ws://localhost:8080/socket");
+      // just to make sure, we're gonna new this one up directly from the
+      // module reference and not from the global (window)
+      var testWs = new aws.ReconnectingWebSocket("ws://localhost:8080/socket");
       testWs.keepAlive(100, JSON.stringify({type:"echo", echoThis:"ka"}));
 
       var shutHerDown = _.after(4, function(){

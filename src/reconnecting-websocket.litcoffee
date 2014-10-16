@@ -39,6 +39,12 @@ The all powerful connect function, sets up events and error handling.
 
       connect: () ->
         @readyState = WebSocket.CONNECTING
+        if @ws
+            @ws.onmessage = null
+            @ws.onopen = null
+            @ws.onerror = null
+            @ws.onclose = null
+            @ws = null
         @ws = new WebSocket(@url)
 
         @ws.onmessage = (event) =>

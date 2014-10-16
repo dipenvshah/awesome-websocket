@@ -114,20 +114,20 @@ First of all, you'll to get the sucker into a format usable by your browser.
 ```bash
 
 npm install awesome-websocket
-browserify -r awesome-websocket -i ws -i coffee-script/register --outfile www/js/reconn.js 
+node_modules/.bin/browserify -r awesome-websocket > www/js/awesome-websocket.js 
 ```
 
-:shit: If you really want to, the most recent browserified version of this thing is down there in `test/www/js/reconn.js`
+:shit: If you really want to, the most recent browserified version of this thing is down there in `test/www/js/awesome-websocket.js`
 
-Then in an HTML page somewhere above js/reconn.js
+Then in an HTML page somewhere above js/awesome-websocket.js
 
 You can, for whatever strange reason, use the ReconnectingWebSocket that underlies
 AwesomeWebSocket ( AwesomeWebSocket is way more awesome tho ).
 
 ```html
-<script src="js/reconn.js"></script>
+<script src="js/awesome-websocket.js"></script>
 <script>
-  var ReconnectingWebSocket = require("awesome-websocket").ReconnectingWebSocket;
+  require("awesome-websocket");
   var ws = new ReconnectingWebSocket("ws://localhost:8080/socket");
   // now ws will reconnect in the event that the server busts, the only problem
   // is that you may lose any messages not sent to the server
@@ -142,9 +142,9 @@ servers to connect to, if any of them choose to vanish... it'll handle that for
 you.
 
 ```html
-<script src="js/reconn.js"></script>
+<script src="js/awesome-websocket.js"></script>
 <script>
-    var AwesomeWebSocket = require("awesome-websocket").AwesomeWebSocket;
+    require("awesome-websocket");
     var testWs = new AwesomeWebSocket([
       "ws://localhost:8085/socket",
       "ws://localhost:8086/socket"
@@ -158,9 +158,9 @@ But, maybe you only have one server or already do load balancing for your server
 In that case, just give it a single url as a string.
 
 ```html
-<script src="js/reconn.js"></script>
+<script src="js/awesome-websocket.js"></script>
 <script>
-    var AwesomeWebSocket = require("awesome-websocket").AwesomeWebSocket;
+    require("awesome-websocket").AwesomeWebSocket;
     var testWs = new AwesomeWebSocket("ws://localhost:8085/socket");
     testWs.send("this message is AWESOME!");
     testWs.send({thisIs: "an object"}); // YAY!

@@ -11,11 +11,11 @@
     window.debug = true;
   </script>
   <script type="text/javascript" src="js/q.js"> </script>
-  <script type="text/javascript" src="js/awesome-websocket-global.js"> </script>
+  <script type="text/javascript" src="js/awesome-websocket.js"> </script>
   <script type="text/javascript" src="js/server_controller.js"> </script>
   <script type="text/javascript" src="js/lodash.js"> </script>
   <script type="text/javascript">
-
+    aws = require('awesome-websocket');
     QUnit.asyncTest('keep alive on ReconnectingWebSocket', function(assert) {
       expect(4);
       var testWs = new ReconnectingWebSocket("ws://localhost:8080/socket");

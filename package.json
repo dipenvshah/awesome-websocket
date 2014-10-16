@@ -1,7 +1,6 @@
 {
   "name": "awesome-websocket",
   "scripts": {
-    "prepublish": "make build"
   },
   "version": "0.0.24",
   "description": "A WebSocket, with the extra awesome of client failover and autoreconnect",
@@ -16,6 +15,7 @@
   "author": {
     "name": "Ian Groff"
   },
+  "main": "index.js",
   "contributors": [
     {
       "name": "Ian Groff",
@@ -48,8 +48,7 @@
     "coffee-script": "^1.7.1",
     "coffeeify": "0.6.0",
     "lodash": "^2.4.1",
-    "simplog": "0.1.0",
-    "ws": "0.4.31"
+    "simplog": "0.1.0"
   },
   "browserify": {
     "transform": [

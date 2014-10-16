@@ -117,7 +117,8 @@ npm install awesome-websocket
 node_modules/.bin/browserify -r awesome-websocket > www/js/awesome-websocket.js 
 ```
 
-:shit: If you really want to, the most recent browserified version of this thing is down there in `test/www/js/awesome-websocket.js`
+:shit: If you really want to, the most recent browserified version of this
+thing is down there in the repository at  `test/www/js/awesome-websocket.js`
 
 Then in an HTML page somewhere above js/awesome-websocket.js
 

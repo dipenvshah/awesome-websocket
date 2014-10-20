@@ -13,29 +13,24 @@ A reference to the contained WebSocket in case you need to poke under the hood.
 
 This may work on the client or the server. Because we love you.
 
-    background = require('./background-process.litcoffee')
-
     class ReconnectingWebSocket
       constructor: (@url) ->
         @forceClose = false
         @wasConnected = false
         @reconnectAfter = 0
-        @connectLoop()
+        @connect()
 
 This is the connection retry system. Keep trying at every opportunity.
 
-      connectLoop: () ->
-        background =>
-          return if @forceClose
-
-          if @readyState isnt WebSocket.OPEN and @readyState isnt WebSocket.CONNECTING
-            if Date.now() > @reconnectAfter
-              @reconnectAfter = Date.now() + 500
-              @connect()
-
-          @connectLoop()
-
-The all powerful connect function, sets up events and error handling.
+    observe = ->
+      Object.observe @, (changes) ->
+        changes.forEach (change) ->
+          if change.object.forceClose
+            observer.disconnect()
+          else if change.object.readyState isnt WebSocket.OPEN and change.object.readyState isnt WebSocket.CONNECTING
+            if Date.now() > change.object.reconnectAfter
+              change.object.reconnectAfter = Date.now() + 500
+              change.object.connect()
 
       connect: () ->
         @readyState = WebSocket.CONNECTING
@@ -48,6 +43,7 @@ The all powerful connect function, sets up events and error handling.
           @readyState = WebSocket.OPEN
           @wasConnected = true
           @onopen(event)
+          @observe()
 
         @ws.onclose = (event) =>
           @readyState = WebSocket.CLOSED
@@ -77,7 +73,7 @@ to know that we did or did not get past a send.
 Since there's all sorts of ways your connection can be severed if it's not active
 ( e.g. nginx ), we'll allow you to specify a keep alive message and an interval
 on which to send it.
-    
+
       keepAlive: (timeoutMs, message) ->
         sendMessage = () => @send(message)
         setInterval(sendMessage, timeoutMs)

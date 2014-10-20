@@ -4,7 +4,7 @@ If we're on the server or in a chrome extension, fall back to setTimeout since t
 
     background = window?.requestAnimationFrame
 
-    if chrome?.extension or not window?.requestAnimationFrame
+    if not chrome?.extension or not window?.requestAnimationFrame
       background = setTimeout
 
     module.exports = background

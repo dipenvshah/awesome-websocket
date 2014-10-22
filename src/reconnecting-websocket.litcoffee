@@ -22,6 +22,7 @@ This may work on the client or the server. Because we love you.
         @reconnectAfter = 0
         @connectLoop()
 
+
 This is the connection retry system. Keep trying at every opportunity.
 
       connectLoop: () ->
@@ -32,7 +33,6 @@ This is the connection retry system. Keep trying at every opportunity.
             if Date.now() > @reconnectAfter
               @reconnectAfter = Date.now() + 500
               @connect()
-
           @connectLoop()
 
 The all powerful connect function, sets up events and error handling.
@@ -77,7 +77,7 @@ to know that we did or did not get past a send.
 Since there's all sorts of ways your connection can be severed if it's not active
 ( e.g. nginx ), we'll allow you to specify a keep alive message and an interval
 on which to send it.
-    
+
       keepAlive: (timeoutMs, message) ->
         sendMessage = () => @send(message)
         setInterval(sendMessage, timeoutMs)

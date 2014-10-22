@@ -94,11 +94,6 @@ As a convenience for testing, we'll emit a message when we've disconnected.
 
       ondisconnect: (event) ->
 
-Set the Loop type (either setTimeout or window.requestAnimationFrame)
-
-      setLoopType: (type) ->
-        background = type
-
 Publish this object for browserify.
 
     module.exports = ReconnectingWebSocket
